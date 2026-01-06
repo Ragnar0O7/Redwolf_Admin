@@ -12,14 +12,24 @@ import 'models/product.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
-
-  await dotenv.load(fileName: ".env");
+  // Try to load .env file (for local development and Vercel builds)
+  // The .env file will be created from Vercel environment variables during build
+  try {
+    await dotenv.load(fileName: ".env");
+  } catch (e) {
+    // .env file not found - this should not happen in production
+    // If it does, the build script should create it from environment variables
+    print("Warning: .env file not found");
+  }
+  
+  // Get Supabase credentials from .env file
+  final supabaseUrl = dotenv.env['SUPABASE_URL'] ?? '';
+  final supabaseAnonKey = dotenv.env['SUPABASE_ANON_KEY'] ?? '';
+  
   // Initialize Supabase
-  // TODO: Replace with your Supabase project URL and anon key
   await SupabaseService.initialize(
-    supabaseUrl: dotenv.env['SUPABASE_URL'] ?? '', // Replace with your Supabase URL
-    supabaseAnonKey:
-     dotenv.env['SUPABASE_ANON_KEY'] ?? '', // Replace with your Supabase anon key
+    supabaseUrl: supabaseUrl,
+    supabaseAnonKey: supabaseAnonKey,
   );
   
   // Pre-load products for instant display
