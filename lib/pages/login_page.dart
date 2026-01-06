@@ -336,37 +336,6 @@ class _LoginPageState extends State<LoginPage> {
                                         ],
                                       ),
                                     ),
-                                    const SizedBox(height: 16),
-                                    // Support Link
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        const Text(
-                                          'Having trouble?',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            color: Color(0xFF6B7280),
-                                          ),
-                                        ),
-                                        const SizedBox(width: 4),
-                                        TextButton(
-                                          onPressed: () {},
-                                          style: TextButton.styleFrom(
-                                            padding: EdgeInsets.zero,
-                                            minimumSize: Size.zero,
-                                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                          ),
-                                          child: const Text(
-                                            'Get support',
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              color: Color(0xFF2563EB),
-                                              decoration: TextDecoration.underline,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
                             ],
                           ),
                         ),

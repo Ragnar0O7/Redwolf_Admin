@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'pages/login_page.dart';
 import 'pages/dashboard_page.dart';
 import 'pages/products_page.dart';
@@ -11,12 +12,14 @@ import 'models/product.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   
+
+  await dotenv.load(fileName: ".env");
   // Initialize Supabase
   // TODO: Replace with your Supabase project URL and anon key
   await SupabaseService.initialize(
-    supabaseUrl: 'https://zsipfgtlfnfvmnrohtdo.supabase.co', // Replace with your Supabase URL
+    supabaseUrl: dotenv.env['SUPABASE_URL'] ?? '', // Replace with your Supabase URL
     supabaseAnonKey:
-     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpzaXBmZ3RsZm5mdm1ucm9odGRvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU4MDczMzEsImV4cCI6MjA4MTM4MzMzMX0.KgTc9nGiLqlY9gh9EaQetz2t9MxB-prPZH9If70YTyY', // Replace with your Supabase anon key
+     dotenv.env['SUPABASE_ANON_KEY'] ?? '', // Replace with your Supabase anon key
   );
   
   // Pre-load products for instant display

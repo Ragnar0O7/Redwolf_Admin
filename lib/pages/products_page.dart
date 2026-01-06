@@ -805,16 +805,6 @@ class _ProductsPageState extends State<ProductsPage> {
   List<Widget> _buildActionIcons(Product product, int productIndex) {
     return [
       IconButton(
-        icon: const Icon(Icons.visibility_outlined, size: 18),
-        color: const Color(0xFF6B7280),
-        padding: EdgeInsets.zero,
-        constraints: const BoxConstraints(
-          minWidth: 28,
-          minHeight: 28,
-        ),
-        onPressed: () {},
-      ),
-      IconButton(
         icon: const Icon(Icons.copy_outlined, size: 18),
         color: const Color(0xFF6B7280),
         padding: EdgeInsets.zero,
