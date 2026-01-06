@@ -45,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
 
       if (!mounted) return;
 
-      if (response.user != null) {
+      if (response.user != null && response.session != null) {
         // Successful login - navigate to dashboard
         context.go('/dashboard');
       } else {
@@ -56,12 +56,27 @@ class _LoginPageState extends State<LoginPage> {
       if (!mounted) return;
       String errorMessage = 'An error occurred. Please try again.';
       
-      if (e.toString().contains('Invalid login credentials')) {
+      final errorString = e.toString();
+      
+      if (errorString.contains('Invalid login credentials') || 
+          errorString.contains('invalid_credentials') ||
+          errorString.contains('Invalid credentials')) {
         errorMessage = 'Invalid email or password. Please try again.';
-      } else if (e.toString().contains('Email not confirmed')) {
+      } else if (errorString.contains('Email not confirmed') || 
+                 errorString.contains('email_not_confirmed')) {
         errorMessage = 'Please verify your email before logging in.';
-      } else if (e.toString().contains('network')) {
-        errorMessage = 'Network error. Please check your connection.';
+      } else if (errorString.contains('Failed to fetch') || 
+                 errorString.contains('ClientException') ||
+                 errorString.contains('CORS') ||
+                 errorString.contains('network') || 
+                 errorString.contains('Network') ||
+                 errorString.contains('Failed host lookup')) {
+        errorMessage = 'Network/CORS error. Please check:\n1. Your internet connection\n2. Supabase CORS settings allow your origin\n3. Try refreshing the page';
+      } else if (errorString.contains('null') && errorString.contains('Supabase')) {
+        errorMessage = 'Supabase not initialized. Please restart the app.';
+      } else {
+        // Show the actual error for debugging
+        errorMessage = 'Error: ${e.toString()}';
       }
       
       _showError(errorMessage);

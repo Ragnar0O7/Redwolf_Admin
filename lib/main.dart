@@ -19,18 +19,73 @@ void main() async {
   } catch (e) {
     // .env file not found - this should not happen in production
     // If it does, the build script should create it from environment variables
-    print("Warning: .env file not found");
   }
   
   // Get Supabase credentials from .env file
   final supabaseUrl = dotenv.env['SUPABASE_URL'] ?? '';
   final supabaseAnonKey = dotenv.env['SUPABASE_ANON_KEY'] ?? '';
   
+  // Validate credentials before initializing
+  if (supabaseUrl.isEmpty || supabaseAnonKey.isEmpty) {
+    runApp(MaterialApp(
+      home: Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.error, color: Colors.red, size: 48),
+              const SizedBox(height: 16),
+              const Text(
+                'Configuration Error',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Supabase credentials are missing.\nURL: ${supabaseUrl.isEmpty ? "Missing" : "OK"}\nKey: ${supabaseAnonKey.isEmpty ? "Missing" : "OK"}',
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      ),
+    ));
+    return;
+  }
+  
   // Initialize Supabase
-  await SupabaseService.initialize(
-    supabaseUrl: supabaseUrl,
-    supabaseAnonKey: supabaseAnonKey,
-  );
+  try {
+    await SupabaseService.initialize(
+      supabaseUrl: supabaseUrl,
+      supabaseAnonKey: supabaseAnonKey,
+    );
+  } catch (e) {
+    runApp(MaterialApp(
+      home: Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.error, color: Colors.red, size: 48),
+              const SizedBox(height: 16),
+              const Text(
+                'Initialization Error',
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  'Failed to initialize Supabase:\n$e',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    ));
+    return;
+  }
   
   // Pre-load products for instant display
   ProductService().preloadProducts();
