@@ -475,6 +475,7 @@ class _AddProductPageState extends State<AddProductPage> {
     );
 
     try {
+      String sanitizeFileName(String name) => name.replaceAll(RegExp(r'[^a-zA-Z0-9._-]'), '_');
       final supabase = SupabaseService();
       final productService = ProductService();
       const bucketName = 'products'; // Supabase storage bucket name
@@ -497,7 +498,6 @@ class _AddProductPageState extends State<AddProductPage> {
       // Upload thumbnail image (first image) if new image is selected
       if (_productImages[0] != null && _productImages[0]!.bytes != null) {
         final timestamp = DateTime.now().millisecondsSinceEpoch;
-        String sanitizeFileName(String name) => name.replaceAll(RegExp(r'[^a-zA-Z0-9._-]'), '_');
         final fileName = 'thumbnail_${timestamp}_${sanitizeFileName(_productImages[0]!.name)}';
         final uploadedUrl = await supabase.uploadImage(
           fileBytes: Uint8List.fromList(_productImages[0]!.bytes!),
