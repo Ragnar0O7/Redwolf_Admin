@@ -497,7 +497,8 @@ class _AddProductPageState extends State<AddProductPage> {
       // Upload thumbnail image (first image) if new image is selected
       if (_productImages[0] != null && _productImages[0]!.bytes != null) {
         final timestamp = DateTime.now().millisecondsSinceEpoch;
-        final fileName = 'thumbnail_${timestamp}_${_productImages[0]!.name}';
+        String sanitizeFileName(String name) => name.replaceAll(RegExp(r'[^a-zA-Z0-9._-]'), '_');
+        final fileName = 'thumbnail_${timestamp}_${sanitizeFileName(_productImages[0]!.name)}';
         final uploadedUrl = await supabase.uploadImage(
           fileBytes: Uint8List.fromList(_productImages[0]!.bytes!),
           fileName: fileName,
@@ -511,7 +512,7 @@ class _AddProductPageState extends State<AddProductPage> {
       // Upload second image if new image is selected
       if (_productImages[1] != null && _productImages[1]!.bytes != null) {
         final timestamp = DateTime.now().millisecondsSinceEpoch;
-        final fileName = 'image2_${timestamp}_${_productImages[1]!.name}';
+        final fileName = 'image2_${timestamp}_${sanitizeFileName(_productImages[1]!.name)}';
         final uploadedUrl = await supabase.uploadImage(
           fileBytes: Uint8List.fromList(_productImages[1]!.bytes!),
           fileName: fileName,
@@ -525,7 +526,7 @@ class _AddProductPageState extends State<AddProductPage> {
       // Upload third image if new image is selected
       if (_productImages[2] != null && _productImages[2]!.bytes != null) {
         final timestamp = DateTime.now().millisecondsSinceEpoch;
-        final fileName = 'image3_${timestamp}_${_productImages[2]!.name}';
+        final fileName = 'image3_${timestamp}_${sanitizeFileName(_productImages[2]!.name)}';
         final uploadedUrl = await supabase.uploadImage(
           fileBytes: Uint8List.fromList(_productImages[2]!.bytes!),
           fileName: fileName,
@@ -539,7 +540,7 @@ class _AddProductPageState extends State<AddProductPage> {
       // Upload GLB file if new file is selected
       if (_glbFile != null && _glbFile!.bytes != null) {
         final timestamp = DateTime.now().millisecondsSinceEpoch;
-        final fileName = 'model_${timestamp}_${_glbFile!.name}';
+        final fileName = 'model_${timestamp}_${sanitizeFileName(_glbFile!.name)}';
         final uploadedUrl = await supabase.uploadGlbFile(
           fileBytes: Uint8List.fromList(_glbFile!.bytes!),
           fileName: fileName,
@@ -553,7 +554,7 @@ class _AddProductPageState extends State<AddProductPage> {
       // Upload USDZ file if new file is selected (optional, for Apple devices)
       if (_usdzFile != null && _usdzFile!.bytes != null) {
         final timestamp = DateTime.now().millisecondsSinceEpoch;
-        final fileName = 'model_${timestamp}_${_usdzFile!.name}';
+        final fileName = 'model_${timestamp}_${sanitizeFileName(_usdzFile!.name)}';
         final uploadedUrl = await supabase.uploadUsdzFile(
           fileBytes: Uint8List.fromList(_usdzFile!.bytes!),
           fileName: fileName,
