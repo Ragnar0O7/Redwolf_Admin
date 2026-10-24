@@ -125,6 +125,14 @@ class SupabaseService {
     );
   }
 
+  // Send password reset email
+  Future<void> resetPasswordForEmail(String email) async {
+    await client.auth.resetPasswordForEmail(
+      email,
+      redirectTo: 'https://admin.redwolfmedia.in/#/login',
+    );
+  }
+
   // Sign out
   Future<void> signOut() async {
     await client.auth.signOut();
