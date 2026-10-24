@@ -178,7 +178,7 @@ class _LoginPageState extends State<LoginPage> {
       try {
         await _supabaseService.resetPasswordForEmail(email);
         if (mounted) {
-          _showSuccess('Password reset link sent to ' + email + '. Please check your inbox.');
+          _showSuccess('If an account exists for ' + email + ', a password reset link has been sent. Please check your inbox.');
         }
       } catch (e) {
         if (mounted) {
